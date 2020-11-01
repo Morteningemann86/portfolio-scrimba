@@ -1,0 +1,516 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Custom Properties, update these for your own design */
+
+:root {
+    --ff-primary: 'Source Sans Pro', sans-serif;
+    --ff-secondary: 'Source Code Pro', monospace;
+    
+    --fw-reg: 300;
+    --fw-bold: 900;
+    
+    --clr-light: #fff;
+    --clr-dark: #303030;
+    --clr-accent: #16e0bd;
+    
+    --fs-h1: 3rem;
+    --fs-h2: 2.25rem;
+    --fs-h3: 1.25rem;
+    --fs-body: 1rem;
+
+    /* This is the variable for our box-shadow. This way we can easily reuse it. Using two shadow layers (seperated by the comma) makes for a more realistic shadow effect. You can also go for three if you want */
+    --bs: 0.45em .45em 0.75em rgba(0,0,0,.35),
+          0.125em 0.125em 0.25em rgba(0,0,0,.15);
+}
+
+/* Increases font sizes on larger screens */
+@media (min-width: 800px) {
+    :root {
+        --fs-h1: 4.5rem;
+        --fs-h2: 3.75rem;
+        --fs-h3: 1.5rem;
+        --fs-body: 1.125rem;
+    }
+}
+
+/* General styles */
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    background: var(--clr-light);
+    color: var(--clr-dark);
+    margin: 0;
+    font-family: var(--ff-primary);
+    font-size: var(--fs-body);
+    line-height: 1.6;
+}
+
+section {
+    padding: 5em 2em;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+/* The normlize.css file removed the styling on the "strong" tag, so we have to add it ourselves */
+strong {
+    font-weight: var(--fw-bold);
+}
+
+/* Adds a green square of whatever is in focus, i.e. when you tab through the site */
+:focus {
+    outline: 3px solid var(--clr-accent);
+    outline-offset: 3px;
+}
+
+/* Buttons */
+
+.btn {
+    display: inline-block;
+    padding: .5em 3.5em;
+    background: var(--clr-accent);
+    color: var(--clr-dark);
+    text-decoration: none;
+    font-size: .8rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: var(--fw-bold);
+    transition: transform 200ms ease-in-out;
+}
+
+.btn:hover {
+    transform: scale(1.1);
+}
+
+
+/* Typography */
+
+h1,
+h2,
+h3 {
+    line-height: 1.1;
+    margin: 0;
+}
+
+h1 { font-size: var(--fs-h1) }
+h2 { font-size: var(--fs-h2) }
+h3 { font-size: var(--fs-h3) }
+
+/* margins and paddings should be done in em because they are relative to the font size */
+.section__title {
+    margin-bottom: .25em;
+}
+
+.section__title--intro {
+    font-weight: var(--fw-reg);
+
+}
+
+/* This makes the "strong" tag always appear on its own line. This type of selecting a tag is called a "compound selector" */
+.section__title--intro strong{
+    display: block;
+
+}
+
+.section__subtitle {
+    margin: 0;
+    font-size: var(--fs-h3);
+}
+
+.section__subtitle--intro,
+.section__subtitle--about {
+    background: var(--clr-accent);
+    font-family: var(--ff-secondary);
+    margin-bottom: 1em;
+    padding: .25em 1em;
+    text-transform: uppercase;
+}
+
+.section__subtitle--work {
+    color: var(--clr-accent);
+    font-weight: var(--fw-bold);
+    margin-bottom: 2em;
+}
+
+
+/* HEADER */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+}
+
+.logo {
+    max-width: 100px;
+}
+
+.nav {
+    position: fixed;
+    background: var(--clr-dark);
+    color: var(--clr-light);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+
+    transform: translateX(100%);
+    transition: transform 250ms cubic-bezier(.5, 0, .5, 1);
+}
+
+.nav__list {
+    list-style: none;
+    display: flex;
+    height: 100%;
+    /* Using flex-direction: column; allow you to then use justify-content: space-evenly; across the entire height of the screen  */
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.nav__link {
+    color: inherit;
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-h2);
+    text-decoration: none;
+}
+
+.nav__link:hover {
+    color: var(--clr-accent);
+    border-bottom: 1px solid var(--clr-accent);
+    padding-bottom: .2em;
+
+}
+
+.nav-toggle {
+    padding: .5em;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    position: absolute;
+    right: 1em;
+    top: 1em;
+    z-index: 1000;
+}
+
+.nav-open .nav {
+    transform: translateX(0);
+}
+
+.nav-open .nav-toggle {
+    position: fixed;
+}
+
+
+/* Animating the hamburger menu */
+.nav-open .hamburger {
+    transform: rotate(.625turn);
+}
+
+.nav-open .hamburger::before {
+    transform: rotate(90deg) translateX(-6px);
+}
+
+.nav-open .hamburger::after {
+    opacity: 0;
+}
+
+/* / Animating the hamburger menu */
+
+
+.hamburger {
+    display: block;
+    position: relative;
+}
+
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+    background: var(--clr-accent);
+    width: 2em;
+    height: 3px;
+    border-radius: 1em;
+    transition: transform 250ms ease-in-out;
+}
+
+
+.hamburger::before,
+.hamburger::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+/* Makes the top and bottom bar for the hamburger menu */
+.hamburger::before {
+    top: 6px;
+}
+
+.hamburger::after {
+    bottom: 6px;
+}
+/* / Makes the top and bottom bar for the hamburger menu */
+
+
+/* Intro section */
+
+.intro {
+    position: relative;
+}
+
+.intro__img {
+    box-shadow: var(--bs);
+}
+
+/* The inline-block makes the green bar of the subtitle--intro fit to the width of the text inside of it, instead of spanning the width of the page */
+.section__subtitle--intro {
+    display: inline-block;
+}
+
+/* Making the intro section responsive */
+@media (min-width: 600px) {
+    .intro {
+        display: grid;
+        width: min-content;
+        margin: 0 auto;
+        grid-column-gap: 1em;
+        grid-template-areas: 
+            "img title"
+            "img subtitle";
+        grid-template-columns: min-content max-content;
+    }
+    
+    .intro__img {
+        grid-area: img;
+        min-width: 250px;
+        /* both position:relative; and z-index: 2; makes sure to push the img on top of the green bar */
+        position: relative;
+        z-index: 2;
+    }
+    .section__subtitle--intro {
+        align-self: start;
+        grid-column: -1 / 1;
+        grid-row: 2;
+        text-align: right;
+        position: relative;
+        /* makes the green line pass through the left side of the img */
+        left: -1.5em;
+        /* Aligns the "front-end dev" part with the right  */
+        width: calc(100% + 1.5em);
+        margin-top: 1.3em;
+    }
+}
+
+
+/* My services section  */
+
+.my-services {
+    /* Always set a background-color first and then a background-image after. This way, the background-color will show if the image fails to load */
+    background-color: var(--clr-dark);
+    background-image: url(/img/services-bg.jpg);
+    background-size: cover;
+    background-blend-mode: overlay;
+    color: var(--clr-light);
+    text-align: center;
+}
+
+.section__title--services {
+    color: var(--clr-accent);
+    position: relative;
+}
+
+/* In CSS, ::after creates a pseudo-element that is the last child of the selected element. It is often used to add cosmetic content to an element with the content property. It is inline by default. */
+.section__title--services::after {
+    /* You need to have a 'content' on a pseudo-element or else it won't show */
+    content: '';
+    display: block;
+    width: 2.2em;
+    height: 1px;
+    margin: 0.5em auto 1em;
+    background-color: var(--clr-light);
+    opacity: 0.3;
+}   
+
+.services {
+    margin-bottom: 4em;
+}
+
+.service {
+    max-width: 500px;
+    margin: 0 auto
+}
+
+@media (min-width: 800px) {
+    .services {
+        display: flex;
+        max-width: 1000px;
+        /* I've used margin-right and margin-left as to not override the margin: 4em; of .services */
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    /* The + sign makes it so that the css looks at the siblings, meaning that it will ignore the first .service, then look at the next ones coming and add the below styling. */
+    .service + .service {
+        margin-left: 2.2em;
+    }
+}
+
+/* About me section */
+
+.about-me {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.about-me__img {
+    box-shadow: var(--bs);
+}
+
+
+
+@media (min-width: 600px) {
+    .about-me {
+        display: grid;
+        grid-template-columns: 1fr 200px;
+        grid-template-areas: 
+        "title img"
+        "subtitle img"
+        "text img";
+        grid-column-gap: 2em;
+    }
+
+    .section__title--about {
+        grid-area: title;
+    }
+
+    .section__subtitle--about {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        position: relative;
+        /* Makes the green bar extend left past the div container */
+        left: -1em;
+        /* makes the green bar extend right past the div container */
+        width: calc(100% + 2em);
+        padding-left: 1em;
+        padding-right: calc(200px + 4em);
+
+    }
+
+    .about-me__img {
+        grid-area: img;
+        position: relative;
+        z-index: 2;
+    }
+}
+
+/* MY WORK SECTION */
+
+.my-work {
+    background: var(--clr-dark);
+    color: var(--clr-light);
+    text-align: center;
+}
+
+.portfolio {
+    display: grid;
+    /* This changes the amount of columns depending on the screen-width. Each grid is minimum 300px wide */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 1em;
+    
+}
+
+.portfolio__item {
+    background: var(--clr-accent);
+    /* The overflow:hidden; makes it so that the img does not expand on top of other img */
+    overflow: hidden;
+}
+
+.portfolio__img {
+    transition: 
+        transform 450ms cubic-bezier(.5, 0, .5, 1),
+        opacity 550ms linear;
+        transition-delay: .1s;
+}
+
+.portfolio__img:hover
+ {
+    transform: scale(1.2);
+    opacity: .9;
+}
+
+
+/* FOOTER */
+
+.footer {
+    background: #111;
+    color: var(--clr-accent);
+    text-align: center;
+    padding: 2.5em 0;
+    font-size: var(--fs-h3);
+}
+
+.footer a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.footer__link {
+    font-weight: var(--fw-bold);
+}
+
+.footer__link:hover,
+.social-list__link:hover {
+    opacity: .7;
+}
+
+.footer__link:hover {
+    border-bottom: 1px solid var(--clr-accent);
+    padding-bottom: 3px;
+}
+
+.social-list {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 2em 0 0;
+    padding: 0;
+
+}
+
+.social-list__item {
+    padding: 0 .5em;
+}
+
+/* This expands the area to click on for the link, making it easier to hit, especially on phones */
+.social-list__link {
+    padding: 1em;
+}
+
+/* INDIVIDUAL PORTFOLIO ITEM STYLES */
+.portfolio-item-individual {
+    padding: 0 2em 2em;
+    max-width: 1000px;
+    margin: 0 auto;
+
+}
+
+.portfolio-item-individual p {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
